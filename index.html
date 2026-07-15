@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japan - Land of the Rising Sun</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;700;900&family=Noto+Sans+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root{--primary:#c41e3a;--primary-dark:#8b1428;--gold:#d4af37;--cream:#faf8f5;--dark:#1a1a2e;--text:#2d2d2d;--text-light:#6b6b6b;--white:#fff;--shadow:0 10px 40px rgba(0,0,0,.1);--shadow-lg:0 20px 60px rgba(0,0,0,.15)}
+        *{margin:0;padding:0;box-sizing:border-box}
+        html{scroll-behavior:smooth}
+        body{font-family:'Noto Sans JP',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
+        ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--cream)}::-webkit-scrollbar-thumb{background:var(--primary);border-radius:4px}
+
+        .loader{position:fixed;inset:0;background:var(--dark);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;transition:opacity .8s,visibility .8s}
+        .loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
+        .loader-torii{width:80px;height:80px;position:relative}
+        .loader-torii .post{position:absolute;bottom:0;width:8px;height:55px;background:var(--primary);border-radius:2px}
+        .loader-torii .post:nth-child(1){left:10px}.loader-torii .post:nth-child(2){right:10px}
+        .loader-torii .beam-top{position:absolute;top:5px;left:-5px;right:-5px;height:8px;background:var(--primary);border-radius:4px;animation:toriiPulse 1.5s ease-in-out infinite}
+        .loader-torii .beam-mid{position:absolute;top:20px;left:5px;right:5px;height:5px;background:var(--primary);border-radius:2px;animation:toriiPulse 1.5s ease-in-out .2s infinite}
+        .loader-text{color:var(--white);font-family:'Noto Serif JP',serif;font-size:1.2rem;margin-top:2rem;animation:fadeInOut 1.5s ease-in-out infinite}
+        @keyframes toriiPulse{0%,100%{opacity:.5;transform:scaleX(.9)}50%{opacity:1;transform:scaleX(1)}}
+        @keyframes fadeInOut{0%,100%{opacity:.4}50%{opacity:1}}
+
+        .trail-petal{position:fixed;pointer-events:none;z-index:9998;font-size:1rem;animation:petalFall 1.2s ease-out forwards}
+        @keyframes petalFall{0%{opacity:1;transform:translate(0,0) rotate(0deg) scale(1)}100%{opacity:0;transform:translate(var(--tx),80px) rotate(360deg) scale(.2)}}
+
+        .greeting-banner{position:fixed;top:0;left:0;right:0;background:linear-gradient(90deg,var(--primary),var(--primary-dark));color:var(--white);text-align:center;padding:.45rem;font-size:.85rem;z-index:1001;transform:translateY(-100%);transition:transform .5s}
+        .greeting-banner.visible{transform:translateY(0)}
+        .greeting-banner span{font-family:'Noto Serif JP',serif;font-weight:700}
+
+        nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.5rem 5%;display:flex;justify-content:space-between;align-items:center;transition:all .4s}
+        nav.scrolled{background:rgba(26,26,46,.95);backdrop-filter:blur(20px);padding:1rem 5%;box-shadow:0 2px 30px rgba(0,0,0,.2)}
+        .logo{font-family:'Noto Serif JP',serif;font-size:1.8rem;font-weight:900;color:var(--white);text-decoration:none;display:flex;align-items:center;gap:.5rem}
+        .logo .kanji{font-size:2.2rem;color:var(--primary)}
+        .nav-links{display:flex;list-style:none;gap:2rem;align-items:center}
+        .nav-links a{color:var(--white);text-decoration:none;font-weight:500;font-size:.95rem;position:relative;padding:.5rem 0;transition:color .3s}
+        .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--primary);transition:width .3s}
+        .nav-links a:hover::after{width:100%}.nav-links a:hover{color:var(--gold)}
+        .hamburger{display:none;flex-direction:column;cursor:pointer;gap:5px}
+        .hamburger span{width:25px;height:2px;background:var(--white);transition:all .3s}
+
+        .hero{height:100vh;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+        .hero-layer{position:absolute;inset:0;background-size:cover;background-position:center;will-change:transform}
+        .hero-layer.back{background-image:url('https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?w=1920&q=80');transform:scale(1.1)}
+        .hero-layer.mid{background:linear-gradient(135deg,rgba(26,26,46,.5),rgba(15,52,96,.4))}
+        .hero-layer.front{background:linear-gradient(to top,var(--dark) 0%,transparent 40%)}
+        .floating-elements{position:absolute;inset:0;pointer-events:none;overflow:hidden;z-index:5}
+        .sakura{position:absolute;font-size:1.5rem;opacity:.6;animation:float linear infinite}
+        .hero-content{text-align:center;z-index:10;color:var(--white);position:relative}
+        .hero-kanji{font-family:'Noto Serif JP',serif;font-size:clamp(6rem,15vw,14rem);font-weight:900;background:linear-gradient(135deg,var(--primary),var(--gold));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1;margin-bottom:1rem;animation:fadeInUp 1s ease;filter:drop-shadow(0 0 60px rgba(196,30,58,.3))}
+        .hero-title{font-family:'Noto Serif JP',serif;font-size:clamp(1.5rem,4vw,3rem);font-weight:700;margin-bottom:1rem;animation:fadeInUp 1s ease .2s both}
+        .hero-subtitle{font-size:1.2rem;opacity:.8;max-width:600px;margin:0 auto 2rem;font-weight:300;animation:fadeInUp 1s ease .4s both}
+        .hero-btn{display:inline-block;padding:1rem 3rem;background:var(--primary);color:var(--white);text-decoration:none;border-radius:50px;font-weight:600;font-size:1rem;transition:all .3s;animation:fadeInUp 1s ease .6s both;border:2px solid var(--primary)}
+        .hero-btn:hover{background:transparent;border-color:var(--gold);color:var(--gold);transform:translateY(-3px);box-shadow:0 10px 30px rgba(196,30,58,.3)}
+        .scroll-indicator{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);animation:bounce 2s infinite;z-index:10}
+        .scroll-indicator div{width:30px;height:50px;border:2px solid rgba(255,255,255,.5);border-radius:15px;position:relative}
+        .scroll-indicator div::before{content:'';width:6px;height:6px;background:var(--white);border-radius:50%;position:absolute;top:8px;left:50%;transform:translateX(-50%);animation:scrollDot 2s infinite}
+
+        .vertical-text{position:fixed;writing-mode:vertical-rl;font-family:'Noto Serif JP',serif;font-size:.9rem;color:rgba(196,30,58,.07);letter-spacing:.5rem;z-index:1;pointer-events:none;user-select:none}
+        .vertical-text.left{left:1.5rem;top:50%;transform:translateY(-50%)}.vertical-text.right{right:1.5rem;top:50%;transform:translateY(-50%)}
+
+        .wave-divider{width:100%;overflow:hidden;line-height:0;margin-top:-1px}
+        .wave-divider svg{width:100%;height:80px;display:block}
+        .wave-divider.flip{transform:scaleY(-1);margin-bottom:-1px;margin-top:0}
+
+        section{padding:6rem 5%;position:relative}
+        .section-header{text-align:center;margin-bottom:4rem}
+        .section-header .kanji-label{font-family:'Noto Serif JP',serif;font-size:3rem;color:var(--primary);opacity:.3;display:block;margin-bottom:-1rem}
+        .section-header h2{font-family:'Noto Serif JP',serif;font-size:2.5rem;color:var(--dark);margin-bottom:1rem}
+        .section-header p{color:var(--text-light);max-width:600px;margin:0 auto;font-size:1.1rem;line-height:1.8}
+        .divider{width:80px;height:3px;background:linear-gradient(90deg,var(--primary),var(--gold));margin:1.5rem auto;border-radius:2px}
+
+        .about{background:var(--white)}
+        .about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;max-width:1200px;margin:0 auto;align-items:center}
+        .about-image{position:relative;border-radius:20px;overflow:hidden;box-shadow:var(--shadow-lg)}
+        .about-image .img-placeholder{width:100%;height:500px;background:url('https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=800&q=80') center/cover no-repeat}
+        .about-image .overlay-text{position:absolute;bottom:2rem;left:2rem;color:var(--white);font-family:'Noto Serif JP',serif;font-size:3rem;text-shadow:2px 2px 10px rgba(0,0,0,.5)}
+        .about-content h3{font-family:'Noto Serif JP',serif;font-size:2rem;color:var(--dark);margin-bottom:1.5rem}
+        .about-content p{color:var(--text-light);line-height:1.9;margin-bottom:1.5rem;font-size:1.05rem}
+        .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:2rem}
+        .stat{text-align:center;padding:1.5rem;background:var(--cream);border-radius:15px}
+        .stat-number{font-family:'Noto Serif JP',serif;font-size:2.5rem;font-weight:900;color:var(--primary)}
+        .stat-label{font-size:.9rem;color:var(--text-light);margin-top:.5rem}
+
+        .culture{background:linear-gradient(135deg,#1a1a2e,#16213e);color:var(--white)}
+        .culture .section-header h2{color:var(--white)}.culture .section-header p{color:rgba(255,255,255,.7)}
+        .culture-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2rem;max-width:1200px;margin:0 auto}
+        .culture-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:2.5rem;transition:all .4s;position:relative;overflow:hidden}
+        .culture-card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--primary),var(--gold));transform:scaleX(0);transition:transform .4s}
+        .culture-card:hover::before{transform:scaleX(1)}
+        .culture-card:hover{transform:translateY(-10px);background:rgba(255,255,255,.1);box-shadow:0 20px 40px rgba(0,0,0,.3)}
+        .culture-card .icon{font-size:3rem;margin-bottom:1.5rem}
+        .culture-card h3{font-family:'Noto Serif JP',serif;font-size:1.4rem;margin-bottom:1rem}
+        .culture-card p{color:rgba(255,255,255,.7);line-height:1.7}
+
+        .food{background:var(--white)}
+        .food-carousel{max-width:1200px;margin:0 auto;position:relative}
+        .food-track{display:flex;gap:2rem;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:1rem 0}
+        .food-track::-webkit-scrollbar{display:none}
+        .food-card{min-width:350px;scroll-snap-align:start;border-radius:20px;overflow:hidden;box-shadow:var(--shadow);transition:all .4s;background:var(--white)}
+        .food-card:hover{transform:translateY(-10px);box-shadow:var(--shadow-lg)}
+        .food-card .food-image{height:250px;background-size:cover;background-position:center;position:relative}
+        .food-card .food-image::after{content:'';position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.3),transparent)}
+        .food-card .food-image.sushi{background-image:url('https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600&q=80')}
+        .food-card .food-image.ramen{background-image:url('https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&q=80')}
+        .food-card .food-image.tempura{background-image:url('https://images.unsplash.com/photo-1615361200141-f45040f367be?w=600&q=80')}
+        .food-card .food-image.matcha{background-image:url('https://images.unsplash.com/photo-1515823064-d6e0c04616a7?w=600&q=80')}
+        .food-card .food-image.wagashi{background-image:url('https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&q=80')}
+        .food-card .food-info{padding:1.5rem}
+        .food-card .food-info h3{font-family:'Noto Serif JP',serif;font-size:1.3rem;margin-bottom:.5rem}
+        .food-card .food-info p{color:var(--text-light);line-height:1.6;font-size:.95rem}
+        .food-card .food-tag{display:inline-block;padding:.3rem .8rem;background:var(--cream);border-radius:20px;font-size:.8rem;color:var(--primary);margin-top:.5rem;font-weight:500}
+        .carousel-controls{display:flex;justify-content:center;gap:1rem;margin-top:2rem}
+        .carousel-btn{width:50px;height:50px;border-radius:50%;border:2px solid var(--primary);background:transparent;color:var(--primary);font-size:1.2rem;cursor:pointer;transition:all .3s}
+        .carousel-btn:hover{background:var(--primary);color:var(--white)}
+
+        .seasons{background:var(--cream)}
+        .seasons-tabs{display:flex;justify-content:center;gap:1rem;margin-bottom:3rem;flex-wrap:wrap}
+        .season-tab{padding:1rem 2rem;border:none;background:var(--white);border-radius:50px;font-family:'Noto Sans JP',sans-serif;font-size:1rem;font-weight:500;cursor:pointer;transition:all .3s;box-shadow:0 2px 10px rgba(0,0,0,.05)}
+        .season-tab.active{background:var(--primary);color:var(--white)}
+        .season-tab:hover:not(.active){transform:translateY(-2px);box-shadow:0 5px 20px rgba(0,0,0,.1)}
+        .season-content{max-width:1000px;margin:0 auto;display:none}
+        .season-content.active{display:block;animation:fadeIn .5s ease}
+        .season-display{display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center}
+        .season-visual{height:400px;border-radius:20px;background-size:cover;background-position:center;box-shadow:var(--shadow-lg)}
+        .season-visual.spring{background-image:url('https://images.unsplash.com/photo-1522383225653-ed111181a951?w=800&q=80')}
+        .season-visual.summer{background-image:url('https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=800&q=80')}
+        .season-visual.autumn{background-image:url('https://images.unsplash.com/photo-1476820865390-c52aeebb9891?w=800&q=80')}
+        .season-visual.winter{background-image:url('https://images.unsplash.com/photo-1418985991508-e47386d96a71?w=800&q=80')}
+        .season-info h3{font-family:'Noto Serif JP',serif;font-size:2rem;margin-bottom:1rem}
+        .season-info p{color:var(--text-light);line-height:1.8;margin-bottom:1rem}
+        .season-events{list-style:none;margin-top:1.5rem}
+        .season-events li{padding:.8rem 0;border-bottom:1px solid rgba(0,0,0,.05);display:flex;align-items:center;gap:.8rem}
+        .season-events li span{font-size:1.2rem}
+
+        .zen-section{background:#2a2a2a;padding:6rem 5%;text-align:center;position:relative;overflow:hidden}
+        .zen-section .section-header h2{color:var(--white)}.zen-section .section-header p{color:rgba(255,255,255,.6)}.zen-section .kanji-label{color:rgba(255,255,255,.1)}
+        .zen-canvas-wrap{max-width:900px;margin:0 auto;border-radius:20px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);cursor:crosshair}
+        #zenCanvas{display:block;width:100%;background:#d4c5a9}
+        .zen-instructions{color:rgba(255,255,255,.5);margin-top:1.5rem;font-size:.95rem}
+        .zen-controls{display:flex;justify-content:center;gap:1rem;margin-top:1.5rem}
+        .zen-controls button{padding:.6rem 1.5rem;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.05);color:var(--white);border-radius:50px;cursor:pointer;font-family:'Noto Sans JP',sans-serif;transition:all .3s}
+        .zen-controls button:hover{background:var(--primary);border-color:var(--primary)}
+
+        .temples{background:var(--white);overflow:hidden}
+        .temples-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(350px,1fr));gap:2rem;max-width:1200px;margin:0 auto}
+        .temple-card{border-radius:20px;overflow:hidden;position:relative;height:400px;cursor:pointer}
+        .temple-card .temple-bg{position:absolute;inset:0;background-size:cover;background-position:center;transition:transform .6s}
+        .temple-card:nth-child(1) .temple-bg{background-image:url('https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80')}
+        .temple-card:nth-child(2) .temple-bg{background-image:url('https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=800&q=80')}
+        .temple-card:nth-child(3) .temple-bg{background-image:url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=800&q=80')}
+        .temple-card:hover .temple-bg{transform:scale(1.1)}
+        .temple-card .temple-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8),transparent);display:flex;flex-direction:column;justify-content:flex-end;padding:2rem;color:var(--white)}
+        .temple-card .temple-overlay h3{font-family:'Noto Serif JP',serif;font-size:1.5rem;margin-bottom:.5rem}
+        .temple-card .temple-overlay p{opacity:.8;font-size:.95rem;line-height:1.6}
+        .temple-card .temple-overlay .temple-kanji{font-family:'Noto Serif JP',serif;font-size:2rem;opacity:.5;position:absolute;top:2rem;right:2rem}
+
+        .map-section{background:var(--cream)}
+        .map-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;max-width:1100px;margin:0 auto;align-items:center}
+        .region-info{padding:2rem;background:var(--white);border-radius:20px;box-shadow:var(--shadow);min-height:320px;transition:all .4s}
+        .region-info h3{font-family:'Noto Serif JP',serif;font-size:1.8rem;color:var(--dark);margin-bottom:.5rem}
+        .region-info .region-jp{font-family:'Noto Serif JP',serif;color:var(--primary);font-size:1.2rem;margin-bottom:1rem;opacity:.7}
+        .region-info p{color:var(--text-light);line-height:1.8;margin-bottom:1rem}
+        .region-highlights{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem}
+        .region-highlights span{padding:.4rem 1rem;background:var(--cream);border-radius:20px;font-size:.85rem;color:var(--primary);font-weight:500}
+
+        .proverbs-section{background:linear-gradient(135deg,#0f3460,#1a1a2e);padding:6rem 5%;text-align:center;position:relative;overflow:hidden}
+        .proverbs-section::before{content:'道';position:absolute;font-family:'Noto Serif JP',serif;font-size:30vw;color:rgba(255,255,255,.02);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none}
+        .proverbs-section .section-header h2{color:var(--white)}.proverbs-section .section-header p{color:rgba(255,255,255,.6)}.proverbs-section .kanji-label{color:rgba(255,255,255,.1)}
+        .proverb-cards{max-width:1000px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:2rem}
+        .proverb-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:2.5rem 2rem;transition:all .4s}
+        .proverb-card:hover{transform:translateY(-5px);background:rgba(255,255,255,.08)}
+        .proverb-kanji{font-family:'Noto Serif JP',serif;font-size:2rem;color:var(--gold);margin-bottom:1rem;line-height:1.4}
+        .proverb-romaji{font-style:italic;color:rgba(255,255,255,.5);margin-bottom:1rem;font-size:.9rem}
+        .proverb-meaning{color:rgba(255,255,255,.8);line-height:1.6;font-size:.95rem}
+
+        .gallery{background:var(--cream)}
+        .gallery-grid{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(2,250px);gap:1.5rem;max-width:1200px;margin:0 auto}
+        .gallery-item{border-radius:15px;overflow:hidden;position:relative;cursor:pointer;background-size:cover;background-position:center;transition:all .4s}
+        .gallery-item:hover{transform:scale(1.02);box-shadow:var(--shadow-lg)}
+        .gallery-item:nth-child(1){grid-column:span 2;background-image:url('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1200&q=80')}
+        .gallery-item:nth-child(2){background-image:url('https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=600&q=80')}
+        .gallery-item:nth-child(3){background-image:url('https://images.unsplash.com/photo-1522383225653-ed111181a951?w=600&q=80')}
+        .gallery-item:nth-child(4){background-image:url('https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=600&q=80')}
+        .gallery-item:nth-child(5){grid-column:span 2;background-image:url('https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1200&q=80')}
+        .gallery-item:nth-child(6){background-image:url('https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=600&q=80')}
+        .gallery-item .gallery-label{position:absolute;bottom:1rem;left:1rem;color:var(--white);font-weight:600;text-shadow:1px 1px 5px rgba(0,0,0,.3);z-index:2}
+        .gallery-item .gallery-overlay{position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .3s;display:flex;align-items:center;justify-content:center}
+        .gallery-item:hover .gallery-overlay{background:rgba(0,0,0,.2)}
+        .gallery-item .gallery-overlay span{color:var(--white);font-size:2rem;opacity:0;transform:scale(.5);transition:all .3s}
+        .gallery-item:hover .gallery-overlay span{opacity:1;transform:scale(1)}
+
+        .timeline-section{background:linear-gradient(135deg,#1a1a2e,#16213e);color:var(--white)}
+        .timeline-section .section-header h2{color:var(--white)}.timeline-section .section-header p{color:rgba(255,255,255,.7)}
+        .timeline{max-width:800px;margin:0 auto;position:relative}
+        .timeline::before{content:'';position:absolute;left:50%;transform:translateX(-50%);width:2px;height:100%;background:linear-gradient(to bottom,var(--primary),var(--gold))}
+        .timeline-item{display:flex;margin-bottom:3rem;position:relative}
+        .timeline-item:nth-child(odd){justify-content:flex-start;padding-right:calc(50% + 2rem);text-align:right}
+        .timeline-item:nth-child(even){justify-content:flex-end;padding-left:calc(50% + 2rem)}
+        .timeline-item .timeline-dot{position:absolute;left:50%;transform:translateX(-50%);width:16px;height:16px;background:var(--primary);border-radius:50%;border:3px solid var(--gold);z-index:1}
+        .timeline-item .timeline-content{background:rgba(255,255,255,.05);padding:1.5rem;border-radius:15px;border:1px solid rgba(255,255,255,.1)}
+        .timeline-item .timeline-year{font-family:'Noto Serif JP',serif;font-size:1.3rem;color:var(--gold);margin-bottom:.5rem}
+        .timeline-item h4{margin-bottom:.5rem}.timeline-item p{color:rgba(255,255,255,.7);font-size:.95rem;line-height:1.6}
+
+        .ticker{background:var(--primary);color:var(--white);padding:1rem 0;overflow:hidden}
+        .ticker-track{display:flex;animation:ticker 30s linear infinite;white-space:nowrap}
+        .ticker-item{padding:0 3rem;font-weight:500;display:flex;align-items:center;gap:.5rem}
+
+        .newsletter{background:var(--white);text-align:center}
+        .newsletter-form{max-width:500px;margin:2rem auto 0;display:flex;gap:1rem}
+        .newsletter-form input{flex:1;padding:1rem 1.5rem;border:2px solid #e0e0e0;border-radius:50px;font-size:1rem;font-family:'Noto Sans JP',sans-serif;transition:border-color .3s}
+        .newsletter-form input:focus{outline:none;border-color:var(--primary)}
+        .newsletter-form button{padding:1rem 2rem;background:var(--primary);color:var(--white);border:none;border-radius:50px;font-size:1rem;font-weight:600;cursor:pointer;transition:all .3s;font-family:'Noto Sans JP',sans-serif}
+        .newsletter-form button:hover{background:var(--primary-dark);transform:translateY(-2px)}
+
+        footer{background:var(--dark);color:var(--white);padding:4rem 5% 2rem}
+        .footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;max-width:1200px;margin:0 auto 3rem}
+        .footer-brand .logo{margin-bottom:1rem}.footer-brand p{color:rgba(255,255,255,.6);line-height:1.7}
+        .footer-col h4{font-family:'Noto Serif JP',serif;margin-bottom:1.5rem;color:var(--gold)}
+        .footer-col ul{list-style:none}.footer-col ul li{margin-bottom:.8rem}
+        .footer-col ul li a{color:rgba(255,255,255,.6);text-decoration:none;transition:color .3s}.footer-col ul li a:hover{color:var(--white)}
+        .social-links{display:flex;gap:1rem;margin-top:1.5rem}
+        .social-links a{width:40px;height:40px;border-radius:50%;border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;color:var(--white);text-decoration:none;transition:all .3s}
+        .social-links a:hover{background:var(--primary);border-color:var(--primary)}
+        .footer-bottom{text-align:center;padding-top:2rem;border-top:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.5);font-size:.9rem}
+
+        .back-to-top{position:fixed;bottom:2rem;right:2rem;width:50px;height:50px;background:var(--primary);color:var(--white);border:none;border-radius:50%;font-size:1.2rem;cursor:pointer;opacity:0;visibility:hidden;transition:all .3s;z-index:999;box-shadow:0 5px 20px rgba(196,30,58,.4)}
+        .back-to-top.visible{opacity:1;visibility:visible}.back-to-top:hover{transform:translateY(-5px)}
+
+        .lightbox{position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:2000;display:none;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+        .lightbox.active{display:flex;opacity:1}
+        .lightbox-content{text-align:center;color:var(--white);max-width:900px;padding:2rem}
+        .lightbox-content img{max-width:100%;max-height:65vh;border-radius:15px;box-shadow:0 10px 50px rgba(0,0,0,.5);object-fit:contain}
+        .lightbox-content h3{font-family:'Noto Serif JP',serif;font-size:2rem;margin-top:1.5rem;margin-bottom:.8rem}
+        .lightbox-content p{color:rgba(255,255,255,.7);line-height:1.7;font-size:1.1rem}
+        .lightbox-close{position:absolute;top:2rem;right:2rem;background:none;border:none;color:var(--white);font-size:2rem;cursor:pointer}
+
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes fadeIn{from{opacity:0}to{opacity:1}}
+        @keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-10px)}}
+        @keyframes scrollDot{0%{opacity:1;top:8px}100%{opacity:0;top:30px}}
+        @keyframes float{0%{transform:translateY(-100px) rotate(0);opacity:0}10%{opacity:.6}90%{opacity:.6}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+        @keyframes ticker{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+        .reveal{opacity:0;transform:translateY(30px);transition:all .8s ease}.reveal.active{opacity:1;transform:translateY(0)}
+
+        @media(max-width:1024px){.about-grid{grid-template-columns:1fr;gap:2rem}.season-display{grid-template-columns:1fr}.map-grid{grid-template-columns:1fr}.footer-grid{grid-template-columns:1fr 1fr}.gallery-grid{grid-template-columns:repeat(2,1fr);grid-template-rows:auto}}
+        @media(max-width:768px){.hamburger{display:flex}.nav-links{position:fixed;top:0;right:-100%;width:70%;height:100vh;background:var(--dark);flex-direction:column;justify-content:center;align-items:center;transition:right .4s}.nav-links.active{right:0}.hero-kanji{font-size:5rem}.section-header h2{font-size:2rem}.food-card{min-width:300px}.timeline-item:nth-child(odd),.timeline-item:nth-child(even){padding-left:3rem;padding-right:0;text-align:left;justify-content:flex-start}.timeline::before{left:0}.timeline-item .timeline-dot{left:0}.newsletter-form{flex-direction:column}.footer-grid{grid-template-columns:1fr}.gallery-grid{grid-template-columns:1fr}.gallery-item{grid-column:span 1!important}.temples-grid{grid-template-columns:1fr}.vertical-text{display:none}}
+        @media(max-width:480px){section{padding:4rem 5%}.stats{grid-template-columns:1fr}.seasons-tabs{gap:.5rem}.season-tab{padding:.8rem 1.2rem;font-size:.9rem}.proverb-cards{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+    <div class="loader" id="loader">
+        <div class="loader-torii"><div class="beam-top"></div><div class="beam-mid"></div><div class="post"></div><div class="post"></div></div>
+        <div class="loader-text">ようこそ — Welcome</div>
+    </div>
+
+    <div class="greeting-banner" id="greetingBanner"><span id="greetingText"></span></div>
+    <div class="vertical-text left">日本の美を発見する</div>
+    <div class="vertical-text right">和敬清寂 — Wa Kei Sei Jaku</div>
+    <div id="blossomTrail"></div>
+
+    <nav id="navbar">
+        <a href="#" class="logo"><span class="kanji">日</span>Nippon</a>
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#about">About</a></li>
+            <li><a href="#culture">Culture</a></li>
+            <li><a href="#food">Cuisine</a></li>
+            <li><a href="#seasons">Seasons</a></li>
+            <li><a href="#zen">Zen</a></li>
+            <li><a href="#temples">Temples</a></li>
+            <li><a href="#map">Explore</a></li>
+            <li><a href="#gallery">Gallery</a></li>
+            <li><a href="#history">History</a></li>
+        </ul>
+        <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+    </nav>
+
+    <section class="hero" id="hero">
+        <div class="hero-layer back" id="heroBack"></div>
+        <div class="hero-layer mid"></div>
+        <div class="hero-layer front"></div>
+        <div class="floating-elements" id="floatingElements"></div>
+        <div class="hero-content">
+            <div class="hero-kanji">日本</div>
+            <h1 class="hero-title">Land of the Rising Sun</h1>
+            <p class="hero-subtitle">Discover the timeless beauty of Japan, where ancient traditions seamlessly blend with cutting-edge modernity</p>
+            <a href="#about" class="hero-btn">Begin Journey</a>
+        </div>
+        <div class="scroll-indicator"><div></div></div>
+    </section>
+
+    <div class="wave-divider"><svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path fill="#faf8f5" d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,50 1440,40 L1440,80 L0,80 Z"></path><path fill="rgba(196,30,58,.08)" d="M0,50 C360,80 720,20 1080,50 C1260,65 1380,55 1440,50 L1440,80 L0,80 Z"></path></svg></div>
+
+    <div class="ticker"><div class="ticker-track">
+        <span class="ticker-item">🗾 Japan has 6,852 islands</span><span class="ticker-item">🗾 Over 70% mountainous</span><span class="ticker-item">🗾 Tokyo: world's largest metro area</span><span class="ticker-item">🗾 1,500+ earthquakes per year</span><span class="ticker-item">🗾 Longest life expectancy globally</span><span class="ticker-item">🗾 5.5 million vending machines</span><span class="ticker-item">🗾 28 UNESCO World Heritage Sites</span>
+        <span class="ticker-item">🗾 Japan has 6,852 islands</span><span class="ticker-item">🗾 Over 70% mountainous</span><span class="ticker-item">🗾 Tokyo: world's largest metro area</span><span class="ticker-item">🗾 1,500+ earthquakes per year</span><span class="ticker-item">🗾 Longest life expectancy globally</span><span class="ticker-item">🗾 5.5 million vending machines</span><span class="ticker-item">🗾 28 UNESCO World Heritage Sites</span>
+    </div></div>
+
+    <section class="about" id="about">
+        <div class="section-header reveal">
+            <span class="kanji-label">日本について</span>
+            <h2>About Japan</h2><div class="divider"></div>
+            <p>A harmonious blend of ancient heritage and futuristic innovation</p>
+        </div>
+        <div class="about-grid">
+            <div class="about-image reveal"><div class="img-placeholder"></div><div class="overlay-text">和</div></div>
+            <div class="about-content reveal">
+                <h3>Where Tradition Meets Tomorrow</h3>
+                <p>Japan, an island nation in East Asia, is a captivating destination where centuries-old traditions coexist with technological innovation. From serene bamboo forests to neon-lit cityscapes, every corner tells a story.</p>
+                <p>The concept of "wa" (harmony) permeates Japanese society, influencing everything from architecture and art to daily interactions and culinary arts.</p>
+                <div class="stats">
+                    <div class="stat"><div class="stat-number" data-target="126">0</div><div class="stat-label">Million People</div></div>
+                    <div class="stat"><div class="stat-number" data-target="47">0</div><div class="stat-label">Prefectures</div></div>
+                    <div class="stat"><div class="stat-number" data-target="2000">0</div><div class="stat-label">Years of History</div></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="wave-divider flip"><svg viewBox="0 0 1440 80" preserveAspectRatio="none"><path fill="#faf8f5" d="M0,40 C360,80 720,0 1080,40 C1260,60 1380,50 1440,40 L1440,80 L0,80 Z"></path></svg></div>
+
+    <section class="culture" id="culture">
+        <div class="section-header reveal">
+            <span class="kanji-label" style="color:rgba(255,255,255,.2)">文化</span>
+            <h2>Japanese Culture</h2><div class="divider"></div>
+            <p>Explore the rich tapestry of traditions that define Japan</p>
+        </div>
+        <div class="culture-grid">
+            <div class="culture-card reveal"><div class="icon">🎨</div><h3>Art & Calligraphy</h3><p>Japanese calligraphy (Shodo) is a meditative art form where each brushstroke carries meaning and emotion.</p></div>
+            <div class="culture-card reveal"><div class="icon">🍵</div><h3>Tea Ceremony</h3><p>The Way of Tea (Chado) embodies harmony, respect, purity, and tranquility in each choreographed gesture.</p></div>
+            <div class="culture-card reveal"><div class="icon">🎭</div><h3>Theater & Performance</h3><p>From Kabuki's dramatic makeup to Noh's ethereal masks, centuries of powerful storytelling.</p></div>
+            <div class="culture-card reveal"><div class="icon">🌸</div><h3>Cherry Blossoms</h3><p>Sakura season transforms Japan into a pink paradise, celebrating ephemeral beauty through Hanami.</p></div>
+            <div class="culture-card reveal"><div class="icon">⛩️</div><h3>Festivals</h3><p>Over 300,000 festivals annually, from Gion Matsuri to peaceful Obon celebrations.</p></div>
+            <div class="culture-card reveal"><div class="icon">🥋</div><h3>Martial Arts</h3><p>Born from samurai traditions, teaching discipline and self-improvement through physical mastery.</p></div>
+        </div>
+    </section>
+
+    <section class="food" id="food">
+        <div class="section-header reveal">
+            <span class="kanji-label">料理</span>
+            <h2>Japanese Cuisine</h2><div class="divider"></div>
+            <p>A culinary journey through Japan's most beloved dishes</p>
+        </div>
+        <div class="food-carousel">
+            <div class="food-track" id="foodTrack">
+                <div class="food-card reveal"><div class="food-image sushi"></div><div class="food-info"><h3>Sushi</h3><p>Precisely crafted vinegared rice paired with the freshest seafood.</p><span class="food-tag">Edo Period Origin</span></div></div>
+                <div class="food-card reveal"><div class="food-image ramen"></div><div class="food-info"><h3>Ramen</h3><p>Rich broths simmered for hours with handmade noodles and tender chashu.</p><span class="food-tag">Regional Varieties</span></div></div>
+                <div class="food-card reveal"><div class="food-image tempura"></div><div class="food-info"><h3>Tempura</h3><p>Light crispy batter encasing fresh seafood and vegetables.</p><span class="food-tag">Portuguese Influence</span></div></div>
+                <div class="food-card reveal"><div class="food-image matcha"></div><div class="food-info"><h3>Matcha</h3><p>Stone-ground green tea powder creating a rich umami flavor.</p><span class="food-tag">Ceremonial Grade</span></div></div>
+                <div class="food-card reveal"><div class="food-image wagashi"></div><div class="food-info"><h3>Wagashi</h3><p>Artistic confections from mochi, sweet bean paste, and seasonal ingredients.</p><span class="food-tag">Seasonal Specialties</span></div></div>
+            </div>
+            <div class="carousel-controls">
+                <button class="carousel-btn" onclick="scrollFood(-1)">&#8592;</button>
+                <button class="carousel-btn" onclick="scrollFood(1)">&#8594;</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="seasons" id="seasons">
+        <div class="section-header reveal">
+            <span class="kanji-label">四季</span>
+            <h2>The Four Seasons</h2><div class="divider"></div>
+            <p>Japan's dramatic seasonal changes create distinct landscapes throughout the year</p>
+        </div>
+        <div class="seasons-tabs">
+            <button class="season-tab active" onclick="showSeason('spring',this)">🌸 Spring</button>
+            <button class="season-tab" onclick="showSeason('summer',this)">🎋 Summer</button>
+            <button class="season-tab" onclick="showSeason('autumn',this)">🍁 Autumn</button>
+            <button class="season-tab" onclick="showSeason('winter',this)">❄️ Winter</button>
+        </div>
+        <div class="season-content active" id="spring"><div class="season-display"><div class="season-visual spring"></div><div class="season-info"><h3>Spring (Haru) 春</h3><p>Japan awakens in a sea of pink as cherry blossoms blanket the country. The fleeting beauty of sakura embodies mono no aware.</p><ul class="season-events"><li><span>🌸</span> Cherry Blossom Season (Hanami)</li><li><span>🎎</span> Hina Matsuri (Girls' Day)</li><li><span>🌷</span> Tulip Festivals in Tochigi</li><li><span>🎶</span> School Entrance Ceremonies</li></ul></div></div></div>
+        <div class="season-content" id="summer"><div class="season-display"><div class="season-visual summer"></div><div class="season-info"><h3>Summer (Natsu) 夏</h3><p>Hot days bring vibrant festivals, fireworks, and lush green landscapes full of energy.</p><ul class="season-events"><li><span>🎆</span> Sumida River Fireworks</li><li><span>🏮</span> Gion Matsuri in Kyoto</li><li><span>🎶</span> Obon Dance Festivals</li><li><span>🌊</span> Beach Season in Okinawa</li></ul></div></div></div>
+        <div class="season-content" id="autumn"><div class="season-display"><div class="season-visual autumn"></div><div class="season-info"><h3>Autumn (Aki) 秋</h3><p>Maple leaves turn brilliant red and gold. The best season for food with harvest festivals.</p><ul class="season-events"><li><span>🍁</span> Koyo (Autumn Leaf Viewing)</li><li><span>🎃</span> Shichi-Go-San Festival</li><li><span>🥮</span> Tsukimi (Moon Viewing)</li><li><span>🍎</span> Harvest Festivals</li></ul></div></div></div>
+        <div class="season-content" id="winter"><div class="season-display"><div class="season-visual winter"></div><div class="season-info"><h3>Winter (Fuyu) 冬</h3><p>Snow blankets mountains, illuminations light cities, and hot springs offer warmth.</p><ul class="season-events"><li><span>❄️</span> Sapporo Snow Festival</li><li><span>✨</span> Winter Illuminations</li><li><span>♨️</span> Onsen (Hot Springs) Season</li><li><span>🎿</span> Skiing in Niseko & Hakuba</li></ul></div></div></div>
+    </section>
+
+    <section class="zen-section" id="zen">
+        <div class="section-header reveal">
+            <span class="kanji-label">禅</span>
+            <h2>Zen Garden</h2><div class="divider"></div>
+            <p>Click and drag to rake patterns in the sand — find your inner peace</p>
+        </div>
+        <div class="zen-canvas-wrap reveal"><canvas id="zenCanvas" width="900" height="400"></canvas></div>
+        <p class="zen-instructions">Move your cursor across the sand to create peaceful rake patterns</p>
+        <div class="zen-controls"><button onclick="resetZenGarden()">Clear Sand</button><button onclick="addZenStone()">Place Stone</button></div>
+    </section>
+
+    <section class="temples" id="temples">
+        <div class="section-header reveal">
+            <span class="kanji-label">寺院</span>
+            <h2>Sacred Temples</h2><div class="divider"></div>
+            <p>Ancient sanctuaries that house centuries of spiritual heritage</p>
+        </div>
+        <div class="temples-grid">
+            <div class="temple-card reveal"><div class="temple-bg"></div><div class="temple-overlay"><span class="temple-kanji">金閣寺</span><h3>Kinkaku-ji</h3><p>The Golden Pavilion of Kyoto, covered in gold leaf and reflected in a mirror pond.</p></div></div>
+            <div class="temple-card reveal"><div class="temple-bg"></div><div class="temple-overlay"><span class="temple-kanji">清水寺</span><h3>Kiyomizu-dera</h3><p>Perched on a hillside in Kyoto, this wooden temple offers panoramic views.</p></div></div>
+            <div class="temple-card reveal"><div class="temple-bg"></div><div class="temple-overlay"><span class="temple-kanji">伏見稲荷</span><h3>Fushimi Inari</h3><p>Thousands of vermillion torii gates create a hypnotic pathway up sacred Mount Inari.</p></div></div>
+        </div>
+    </section>
+
+    <section class="map-section" id="map">
+        <div class="section-header reveal">
+            <span class="kanji-label">日本地図</span>
+            <h2>Explore Japan</h2><div class="divider"></div>
+            <p>Hover over a region to discover what makes each area unique</p>
+        </div>
+        <div class="map-grid">
+            <div class="reveal" id="japanMap" style="text-align:center">
+                <svg viewBox="0 0 300 500" style="max-width:350px;width:100%">
+                    <g id="hokkaido" class="map-region" data-region="hokkaido" style="cursor:pointer"><path d="M180,20 C200,15 230,25 240,50 C250,75 240,95 220,100 C200,105 185,95 175,80 C165,65 160,35 180,20Z" fill="#e8e0d4" stroke="#c41e3a" stroke-width="1"/></g>
+                    <g id="tohoku" class="map-region" data-region="tohoku" style="cursor:pointer"><path d="M190,110 C210,105 225,120 225,145 C225,170 215,190 200,200 C185,210 170,205 165,190 C160,175 165,155 175,140 C180,125 180,115 190,110Z" fill="#e8e0d4" stroke="#c41e3a" stroke-width="1"/></g>
+                    <g id="kanto" class="map-region" data-region="kanto" style="cursor:pointer"><path d="M185,210 C200,205 220,215 225,235 C230,255 220,270 205,275 C190,280 175,270 170,255 C165,240 170,220 185,210Z" fill="#e8e0d4" stroke="#c41e3a" stroke-width="1"/></g>
+                    <g id="chubu" class="map-region" data-region="chubu" style="cursor:pointer"><path d="M155,195 C170,185 190,190 195,210 C200,230 190,250 175,260 C160,270 140,265 135,250 C130,235 140,215 155,195Z" fill="#e8e0d4" stroke="#c41e3a" stroke-width="1"/></g>
+                    <g id="kansai" class="map-region" data-region="kansai" style="cursor:pointer"><path d="M145,275 C160,265 180,270 185,290 C190,310 180,325 165,330 C150,335 135,325 130,310 C125,295 130,285 145,275Z" fill="#e8e0d4" stroke="#c41e3a" stroke-width="1"/></g>
+                    <g id="chugoku" class="map-region" data-region="chugoku" style="cursor:pointer"><path d="M100,285 C120,275 140,280 145,295 C150,310 140,325 125,330 C110,335 90,325 85,310 C80,295 85,290 100,285Z" fill="#e8e0d4" stroke="#c41e3a" stroke-width="1"/></g>
+                    <g id="shikoku" class="map-region" data-region="shikoku" style="cursor:pointer"><path d="M105,340 C120,335 140,340 145,355 C150,370 140,385 125,388 C110,391 95,380 92,365 C89,350 95,345 105,340Z" fill="#e8e0d4" stroke="#c41e3a" stroke-width="1"/></g>
+                    <g id="kyushu" class="map-region" data-region="kyushu" style="cursor:pointer"><path d="M55,370 C70,360 90,365 95,380 C100,395 90,415 75,420 C60,425 45,415 42,400 C39,385 45,375 55,370Z" fill="#e8e0d4" stroke="#c41e3a" stroke-width="1"/></g>
+                    <text x="240" y="60" font-family="Noto Serif JP" font-size="10" fill="#999">北海道</text>
+                    <text x="230" y="160" font-family="Noto Serif JP" font-size="10" fill="#999">東北</text>
+                    <text x="235" y="250" font-family="Noto Serif JP" font-size="10" fill="#999">関東</text>
+                    <text x="115" y="240" font-family="Noto Serif JP" font-size="10" fill="#999">中部</text>
+                    <text x="150" y="310" font-family="Noto Serif JP" font-size="10" fill="#999">関西</text>
+                    <text x="60" y="310" font-family="Noto Serif JP" font-size="10" fill="#999">中国</text>
+                    <text x="115" y="370" font-family="Noto Serif JP" font-size="9" fill="#999">四国</text>
+                    <text x="25" y="400" font-family="Noto Serif JP" font-size="9" fill="#999">九州</text>
+                </svg>
+            </div>
+            <div class="region-info reveal" id="regionInfo">
+                <h3 id="regionName">Select a Region</h3>
+                <div class="region-jp" id="regionJP">地図をクリックしてください</div>
+                <p id="regionDesc">Hover over a region on the map to learn about its unique culture, food, and attractions.</p>
+                <div class="region-highlights" id="regionHighlights"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="proverbs-section">
+        <div class="section-header reveal">
+            <span class="kanji-label">ことわざ</span>
+            <h2>Words of Wisdom</h2><div class="divider"></div>
+            <p>Timeless Japanese proverbs that offer guidance for life</p>
+        </div>
+        <div class="proverb-cards">
+            <div class="proverb-card reveal"><div class="proverb-kanji">七転び八起き</div><div class="proverb-romaji">Nana korobi ya oki</div><div class="proverb-meaning">Fall seven times, stand up eight. Perseverance is the key to overcoming any obstacle.</div></div>
+            <div class="proverb-card reveal"><div class="proverb-kanji">猿も木から落ちる</div><div class="proverb-romaji">Saru mo ki kara ochiru</div><div class="proverb-meaning">Even monkeys fall from trees. Everyone makes mistakes, no matter how skilled.</div></div>
+            <div class="proverb-card reveal"><div class="proverb-kanji">千里の道も一歩から</div><div class="proverb-romaji">Senri no michi mo ippo kara</div><div class="proverb-meaning">A journey of a thousand miles begins with a single step.</div></div>
+            <div class="proverb-card reveal"><div class="proverb-kanji">出過ぎた杭は打たれない</div><div class="proverb-romaji">Desugita kui wa utarenai</div><div class="proverb-meaning">The nail that sticks out gets hammered down. A lesson on humility and conformity.</div></div>
+            <div class="proverb-card reveal"><div class="proverb-kanji">急がば回れ</div><div class="proverb-romaji">Isogaba mare</div><div class="proverb-meaning">Slow is smooth, smooth is fast. Sometimes the longer route is the safer one.</div></div>
+            <div class="proverb-card reveal"><div class="proverb-kanji">花より団子</div><div class="proverb-romaji">Hana yori dangō</div><div class="proverb-meaning">Dumplings over flowers. Practical value is sometimes preferred over beauty.</div></div>
+        </div>
+    </section>
+
+    <section class="gallery" id="gallery">
+        <div class="section-header reveal">
+            <span class="kanji-label">写真</span>
+            <h2>Visual Journey</h2><div class="divider"></div>
+            <p>Moments that capture the essence of Japan</p>
+        </div>
+        <div class="gallery-grid">
+            <div class="gallery-item reveal" onclick="openLightbox('https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=1200&q=80','Tokyo Skyline','The endless cityscape stretches to the horizon, a blend of ancient and ultra-modern.')"><span class="gallery-label">Tokyo Skyline</span><div class="gallery-overlay"><span>🔍</span></div></div>
+            <div class="gallery-item reveal" onclick="openLightbox('https://images.unsplash.com/photo-1478436127897-769e1b3f0f36?w=800&q=80','Fushimi Inari','Thousands of vermillion torii gates create a hypnotic pathway.')"><span class="gallery-label">Fushimi Inari</span><div class="gallery-overlay"><span>🔍</span></div></div>
+            <div class="gallery-item reveal" onclick="openLightbox('https://images.unsplash.com/photo-1522383225653-ed111181a951?w=800&q=80','Hanami Season','Cherry blossoms rain down like pink snow.')"><span class="gallery-label">Hanami</span><div class="gallery-overlay"><span>🔍</span></div></div>
+            <div class="gallery-item reveal" onclick="openLightbox('https://images.unsplash.com/photo-1490806843957-31f4c9a91c65?w=800&q=80','Mount Fuji','Japan\\'s iconic snow-capped peak, a sacred symbol of perseverance.')"><span class="gallery-label">Mount Fuji</span><div class="gallery-overlay"><span>🔍</span></div></div>
+            <div class="gallery-item reveal" onclick="openLightbox('https://images.unsplash.com/photo-1528360983277-13d401cdc186?w=1200&q=80','Kyoto Streets','Traditional wooden machiya houses line historic districts.')"><span class="gallery-label">Kyoto Streets</span><div class="gallery-overlay"><span>🔍</span></div></div>
+            <div class="gallery-item reveal" onclick="openLightbox('https://images.unsplash.com/photo-1545569341-9eb8b30979d9?w=800&q=80','Osaka Castle','A magnificent castle surrounded by moats and gardens.')"><span class="gallery-label">Osaka Castle</span><div class="gallery-overlay"><span>🔍</span></div></div>
+        </div>
+    </section>
+
+    <section class="timeline-section" id="history">
+        <div class="section-header reveal">
+            <span class="kanji-label" style="color:rgba(255,255,255,.2)">歴史</span>
+            <h2>Through the Ages</h2><div class="divider"></div>
+            <p>A journey through Japan's remarkable history</p>
+        </div>
+        <div class="timeline">
+            <div class="timeline-item reveal"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-year">660 BC</div><h4>Legendary Founding</h4><p>Emperor Jimmu establishes the first imperial dynasty.</p></div></div>
+            <div class="timeline-item reveal"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-year">794 AD</div><h4>Heian Period</h4><p>The court moves to Kyoto, beginning a golden age of culture.</p></div></div>
+            <div class="timeline-item reveal"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-year">1185 AD</div><h4>Rise of the Samurai</h4><p>The first shogunate begins 700 years of warrior rule.</p></div></div>
+            <div class="timeline-item reveal"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-year">1603 AD</div><h4>Edo Period</h4><p>250 years of peace and cultural flowering under Tokugawa rule.</p></div></div>
+            <div class="timeline-item reveal"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-year">1868 AD</div><h4>Meiji Restoration</h4><p>Japan opens to the world and undergoes rapid modernization.</p></div></div>
+            <div class="timeline-item reveal"><div class="timeline-dot"></div><div class="timeline-content"><div class="timeline-year">Present</div><h4>Modern Japan</h4><p>Leading the world in technology, anime, cuisine, and culture.</p></div></div>
+        </div>
+    </section>
+
+    <section class="newsletter">
+        <div class="section-header reveal">
+            <span class="kanji-label">購読</span>
+            <h2>Stay Connected</h2><div class="divider"></div>
+            <p>Subscribe to receive updates about Japan's culture and travel tips</p>
+        </div>
+        <form class="newsletter-form reveal" onsubmit="handleSubscribe(event)">
+            <input type="email" placeholder="Enter your email" required>
+            <button type="submit">Subscribe</button>
+        </form>
+        <p id="subscribeMsg" style="margin-top:1rem;color:var(--primary);display:none">Arigatou! Welcome aboard! 🎌</p>
+    </section>
+
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand"><a href="#" class="logo"><span class="kanji">日</span>Nippon</a><p>Celebrating the beauty, culture, and timeless spirit of Japan.</p>
+                <div class="social-links"><a href="#">X</a><a href="#">in</a><a href="#">ig</a><a href="#">yt</a></div>
+            </div>
+            <div class="footer-col"><h4>Explore</h4><ul><li><a href="#about">About Japan</a></li><li><a href="#culture">Culture</a></li><li><a href="#food">Cuisine</a></li><li><a href="#seasons">Seasons</a></li><li><a href="#temples">Temples</a></li></ul></div>
+            <div class="footer-col"><h4>Regions</h4><ul><li><a href="#">Tokyo</a></li><li><a href="#">Kyoto</a></li><li><a href="#">Osaka</a></li><li><a href="#">Hokkaido</a></li><li><a href="#">Okinawa</a></li></ul></div>
+            <div class="footer-col"><h4>Learn</h4><ul><li><a href="#">Japanese Language</a></li><li><a href="#">Etiquette Guide</a></li><li><a href="#">Travel Tips</a></li><li><a href="#">Photo Gallery</a></li><li><a href="#">Blog</a></li></ul></div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2026 Nippon — Land of the Rising Sun. Made with ❤️ for Japan.</p></div>
+    </footer>
+
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
+        <button class="lightbox-close">&times;</button>
+        <div class="lightbox-content" onclick="event.stopPropagation()">
+            <img id="lightboxImage" src="" alt="">
+            <h3 id="lightboxTitle"></h3><p id="lightboxDesc"></p>
+        </div>
+    </div>
+
+    <script>
+    (function(){
+        // Loading screen
+        window.addEventListener('load',function(){setTimeout(function(){document.getElementById('loader').classList.add('hidden')},1500)});
+
+        // Greeting based on time of day
+        var hour=new Date().getHours();
+        var greet='',detail='';
+        if(hour<6){greet='おはようございます';detail='Good Early Morning — The world is quiet and still'}
+        else if(hour<12){greet='おはようございます';detail='Good Morning — A fresh day begins in Japan'}
+        else if(hour<17){greet='こんにちは';detail='Good Afternoon — The sun shines over ancient temples'}
+        else if(hour<21){greet='こんばんは';detail='Good Evening — Lanterns glow along temple paths'}
+        else{greet='おやすみなさい';detail='Good Night — The moon rises over Mount Fuji'}
+        document.getElementById('greetingText').textContent=greet+' — '+detail;
+        setTimeout(function(){document.getElementById('greetingBanner').classList.add('visible')},2000);
+        setTimeout(function(){document.getElementById('greetingBanner').classList.remove('visible')},8000);
+
+        // Navbar scroll
+        var navbar=document.getElementById('navbar'),backToTop=document.getElementById('backToTop');
+        window.addEventListener('scroll',function(){
+            if(window.scrollY>100){navbar.classList.add('scrolled');backToTop.classList.add('visible')}
+            else{navbar.classList.remove('scrolled');backToTop.classList.remove('visible')}
+        });
+
+        // Hamburger
+        var hamburger=document.getElementById('hamburger'),navLinks=document.getElementById('navLinks');
+        hamburger.addEventListener('click',function(){navLinks.classList.toggle('active')});
+        document.querySelectorAll('.nav-links a').forEach(function(l){l.addEventListener('click',function(){navLinks.classList.remove('active')})});
+
+        // Sakura petals
+        var container=document.getElementById('floatingElements');
+        var petals=['🌸','🏵️','💮'];
+        for(var i=0;i<15;i++){var p=document.createElement('span');p.className='sakura';p.textContent=petals[Math.floor(Math.random()*petals.length)];p.style.left=Math.random()*100+'%';p.style.animationDuration=(Math.random()*10+10)+'s';p.style.animationDelay=Math.random()*10+'s';p.style.fontSize=(Math.random()*1.5+0.8)+'rem';container.appendChild(p)}
+
+        // Parallax hero
+        var heroBack=document.getElementById('heroBack');
+        window.addEventListener('scroll',function(){if(window.scrollY<window.innerHeight){heroBack.style.transform='scale(1.1) translateY('+window.scrollY*0.3+'px)'}});
+
+        // Cursor blossom trail
+        var trailPetals=['🌸','🏵️','💮','🌺'];
+        document.addEventListener('mousemove',function(e){
+            if(Math.random()>0.85){
+                var petal=document.createElement('span');
+                petal.className='trail-petal';
+                petal.textContent=trailPetals[Math.floor(Math.random()*trailPetals.length)];
+                petal.style.left=e.clientX+'px';petal.style.top=e.clientY+'px';
+                petal.style.setProperty('--tx',(Math.random()*60-30)+'px');
+                document.getElementById('blossomTrail').appendChild(petal);
+                setTimeout(function(){petal.remove()},1200);
+            }
+        });
+
+        // Scroll reveal
+        var reveals=document.querySelectorAll('.reveal');
+        function revealOnScroll(){reveals.forEach(function(el){if(el.getBoundingClientRect().top<window.innerHeight-100){el.classList.add('active')}})}
+        window.addEventListener('scroll',revealOnScroll);revealOnScroll();
+
+        // Counter animation
+        var counters=document.querySelectorAll('.stat-number');
+        function animateCounters(){counters.forEach(function(c){
+            var target=parseInt(c.getAttribute('data-target'));
+            if(c.getBoundingClientRect().top<window.innerHeight&&!c.classList.contains('counted')){
+                c.classList.add('counted');var cur=0;var inc=target/60;
+                var timer=setInterval(function(){cur+=inc;if(cur>=target){c.textContent=target.toLocaleString()+'+';clearInterval(timer)}else{c.textContent=Math.floor(cur).toLocaleString()}},30);
+            }
+        })}
+        window.addEventListener('scroll',animateCounters);
+
+        // Food carousel
+        window.scrollFood=function(dir){document.getElementById('foodTrack').scrollBy({left:dir*370,behavior:'smooth'})};
+
+        // Seasons
+        window.showSeason=function(s,btn){
+            document.querySelectorAll('.season-content').forEach(function(el){el.classList.remove('active')});
+            document.querySelectorAll('.season-tab').forEach(function(el){el.classList.remove('active')});
+            document.getElementById(s).classList.add('active');btn.classList.add('active');
+        };
+
+        // Zen garden
+        var zenCanvas=document.getElementById('zenCanvas');
+        var zCtx=zenCanvas.getContext('2d');
+        var zenStones=[];
+        function initZen(){
+            zCtx.fillStyle='#d4c5a9';zCtx.fillRect(0,0,zenCanvas.width,zenCanvas.height);
+            // Draw subtle sand lines
+            zCtx.strokeStyle='rgba(0,0,0,.04)';zCtx.lineWidth=1;
+            for(var y=10;y<zenCanvas.height;y+=8){zCtx.beginPath();zCtx.moveTo(0,y);zCtx.lineTo(zenCanvas.width,y);zCtx.stroke()}
+        }
+        initZen();
+        var zenDrawing=false;
+        function drawZenRake(x,y){
+            zCtx.beginPath();zCtx.strokeStyle='rgba(139,119,80,.6)';zCtx.lineWidth=3;
+            zCtx.lineCap='round';
+            // Draw 3 parallel lines
+            for(var off=-6;off<=6;off+=6){
+                zCtx.beginPath();zCtx.moveTo(x-20,y+off);zCtx.lineTo(x+20,y+off);zCtx.stroke();
+            }
+        }
+        zenCanvas.addEventListener('mousedown',function(e){zenDrawing=true});
+        zenCanvas.addEventListener('mouseup',function(){zenDrawing=false});
+        zenCanvas.addEventListener('mouseleave',function(){zenDrawing=false});
+        zenCanvas.addEventListener('mousemove',function(e){
+            if(!zenDrawing)return;
+            var rect=zenCanvas.getBoundingClientRect();
+            var scaleX=zenCanvas.width/rect.width;var scaleY=zenCanvas.height/rect.height;
+            var x=(e.clientX-rect.left)*scaleX;var y=(e.clientY-rect.top)*scaleY;
+            drawZenRake(x,y);
+        });
+        // Touch support
+        zenCanvas.addEventListener('touchstart',function(e){zenDrawing=true;e.preventDefault()});
+        zenCanvas.addEventListener('touchend',function(){zenDrawing=false});
+        zenCanvas.addEventListener('touchmove',function(e){
+            if(!zenDrawing)return;e.preventDefault();
+            var touch=e.touches[0];var rect=zenCanvas.getBoundingClientRect();
+            var scaleX=zenCanvas.width/rect.width;var scaleY=zenCanvas.height/rect.height;
+            var x=(touch.clientX-rect.left)*scaleX;var y=(touch.clientY-rect.top)*scaleY;
+            drawZenRake(x,y);
+        });
+        window.resetZenGarden=function(){initZen();zenStones=[]};
+        window.addZenStone=function(){
+            var x=100+Math.random()*(zenCanvas.width-200);var y=100+Math.random()*(zenCanvas.height-200);
+            var r=10+Math.random()*15;
+            zCtx.beginPath();zCtx.arc(x,y,r,0,Math.PI*2);
+            zCtx.fillStyle='#6b6b6b';zCtx.fill();
+            zCtx.beginPath();zCtx.arc(x-r*0.3,y-r*0.3,r*0.4,0,Math.PI*2);
+            zCtx.fillStyle='rgba(255,255,255,.15)';zCtx.fill();
+            zenStones.push({x:x,y:y,r:r});
+        };
+
+        // Japan map regions
+        var regionData={
+            hokkaido:{name:'Hokkaido',jp:'北海道',desc:'Japan\'s northernmost island, famous for fresh seafood, powder snow skiing, lavender fields in Furano, and the beautiful national parks. Home to Sapporo Snow Festival.',highlights:['Sapporo','Powder Snow','Lavender Fields','Seafood','National Parks']},
+            tohoku:{name:'Tohoku',jp:'東北',desc:'A region of natural beauty with hot springs, rugged coastlines, and historic castles. Known for the Nebuta Matsuri festival and pristine wilderness.',highlights:['Sendai','Hot Springs','Nebuta Festival','Matsushima Bay','Fall Foliage']},
+            kanto:{name:'Kanto',jp:'関東',desc:'The heart of modern Japan, home to Tokyo and Yokohama. A dazzling mix of ultramodern technology, historic temples, and vibrant nightlife.',highlights:['Tokyo','Mt. Fuji','Kamakura','Yokohama','Akihabara']},
+            chubu:{name:'Chubu',jp:'中部',desc:'Home to the Japanese Alps, Takayama\'s preserved old town, and Nagoya Castle. A region where samurai heritage meets alpine beauty.',highlights:['Japanese Alps','Takayama','Nagoya','Shirakawa-go','Matsumoto']},
+            kansai:{name:'Kansai',jp:'関西',desc:'Japan\'s cultural heartland including Kyoto, Osaka, and Nara. Ancient capitals with thousands of temples, street food culture, and geisha districts.',highlights:['Kyoto','Osaka','Nara','Kobe','Fushimi Inari']},
+            chugoku:{name:'Chugoku',jp:'中国',desc:'Western Honshu featuring Hiroshima\'s Peace Memorial, the sacred island of Miyajima, and the beautiful coastal Inland Sea.',highlights:['Hiroshima','Miyajima','Okayama','Kurashiki','Inland Sea']},
+            shikoku:{name:'Shikoku',jp:'四国',desc:'The smallest main island, known for the 88 Temple Pilgrimage, stunning gorges, and the Naruto whirlpools.',highlights:['88 Temple Pilgrimage','Iya Valley','Naruto Whirlpools','Matsuyama Onsen']},
+            kyushu:{name:'Kyushu',jp:'九州',desc:'Japan\'s southernmost main island with active volcanoes, hot springs, tropical beaches, and Fukuoka\'s legendary ramen scene.',highlights:['Fukuoka','Mt. Aso','Beppu Onsen','Nagasaki','Tropical Beaches']}
+        };
+        document.querySelectorAll('.map-region').forEach(function(region){
+            region.addEventListener('mouseenter',function(){
+                var key=this.getAttribute('data-region');var d=regionData[key];
+                if(!d)return;
+                document.getElementById('regionName').textContent=d.name;
+                document.getElementById('regionJP').textContent=d.jp;
+                document.getElementById('regionDesc').textContent=d.desc;
+                var hl='';d.highlights.forEach(function(h){hl+='<span>'+h+'</span>'});
+                document.getElementById('regionHighlights').innerHTML=hl;
+                document.querySelectorAll('.map-region path').forEach(function(p){p.style.fill='#e8e0d4'});
+                this.querySelector('path').style.fill='#c41e3a';
+            });
+        });
+
+        // Lightbox
+        window.openLightbox=function(src,title,desc){
+            var lb=document.getElementById('lightbox');
+            document.getElementById('lightboxImage').src=src;
+            document.getElementById('lightboxImage').alt=title;
+            document.getElementById('lightboxTitle').textContent=title;
+            document.getElementById('lightboxDesc').textContent=desc;
+            lb.classList.add('active');document.body.style.overflow='hidden';
+        };
+        window.closeLightbox=function(){document.getElementById('lightbox').classList.remove('active');document.body.style.overflow=''};
+        document.addEventListener('keydown',function(e){if(e.key==='Escape')closeLightbox()});
+
+        // Newsletter
+        window.handleSubscribe=function(e){e.preventDefault();document.getElementById('subscribeMsg').style.display='block';e.target.reset();setTimeout(function(){document.getElementById('subscribeMsg').style.display='none'},3000)};
+
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(function(a){
+            a.addEventListener('click',function(e){e.preventDefault();var t=document.querySelector(this.getAttribute('href'));if(t)t.scrollIntoView({behavior:'smooth',block:'start'})});
+        });
+    })();
+    </script>
+</body>
+</html>
